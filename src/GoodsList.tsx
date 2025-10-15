@@ -3,7 +3,7 @@ import { Good } from './types/Good';
 
 type Props = { goods: Good[] };
 
-export const GoodsList: React.FC<Props> = React.memo(({ goods }) => {
+const GoodsListComponent: React.FC<Props> = ({ goods }) => {
   return (
     <ul>
       {goods.map(good => (
@@ -13,4 +13,7 @@ export const GoodsList: React.FC<Props> = React.memo(({ goods }) => {
       ))}
     </ul>
   );
-});
+};
+
+export const GoodsList = React.memo(GoodsListComponent);
+GoodsList.displayName = 'GoodsList';

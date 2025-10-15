@@ -29,10 +29,15 @@ export const App: React.FC = () => {
         const data = await loader(controller.signal);
 
         setGoods(data);
-      } catch (e: any) {
-        if (e?.name !== 'AbortError') {
-          setError(e?.message || 'Failed to load goods');
+      } catch (err: unknown) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          return;
         }
+
+        const message =
+          err instanceof Error ? err.message : 'Failed to load goods';
+
+        setError(message);
       } finally {
         setLoading(false);
       }
@@ -41,9 +46,7 @@ export const App: React.FC = () => {
   );
 
   const loadAll = useCallback(() => run(getAllGoods), [run]);
-
   const loadFirstFive = useCallback(() => run(getFirstFiveSortedByName), [run]);
-
   const loadRedOnly = useCallback(() => run(getRedGoods), [run]);
 
   return (
